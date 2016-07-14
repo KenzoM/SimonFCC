@@ -1,0 +1,50 @@
+body {
+  background-image: url("http://all4desktop.com/data_images/original/4236795-wallpaper-background.jpg");
+  font-family: 'Righteous', cursive; }
+
+.simon {
+  position: relative;
+  margin: 50px auto;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: #333333;
+  border-style: solid; }
+
+.home {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 250px;
+  width: 250px;
+  background: white;
+  border-radius: 50%;
+  margin: -125px 0px 0px -125px;
+  border: 3px solid black; }
+
+.home h1 {
+  font-size: 50px;
+  position: absolute;
+  left: 18%;
+  top: 0%; }
+
+.red {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  /*background-color: red*/ }
+
+.row {
+  position: absolute;
+  left: 8px;
+  bottom: 110px;
+  border: 10px solid red; }
+
+#count {
+  background: red;
+  width: 50px;
+  height: 50px;
+  border-radius: 93px 93px 93px 93px;
+  -moz-border-radius: 93px 93px 93px 93px;
+  -webkit-border-radius: 93px 93px 93px 93px;
+  border: 2px solid #000000; }
