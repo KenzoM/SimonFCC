@@ -12,6 +12,9 @@ body {
   display: flex;
   flex-wrap: wrap; }
 
+.animate {
+  opacity: 0.23; }
+
 .game {
   display: flex;
   flex-wrap: wrap;
@@ -24,10 +27,12 @@ body {
   display: block;
   height: 50%;
   width: 50%;
-  margin-bottom: 1px; }
+  margin-bottom: 1px;
+  cursor: pointer; }
 
 #green {
   background: #39d565;
+  transition: background-color 0.5s ease;
   border-top-left-radius: 25%;
   box-shadow: 0 6px 0 #0d934b;
   bottom: 6px;
@@ -38,6 +43,7 @@ body {
 
 #red {
   background: #d23a51;
+  transition: background-color 0.5s ease;
   border-top-right-radius: 25%;
   box-shadow: 0 6px 0 #711515;
   bottom: 6px;
@@ -47,17 +53,19 @@ body {
     box-shadow: 0px 0px 0px #711515; }
 
 #blue {
-  background: #09f;
+  background: #0099ff;
+  transition: background-color 0.5s ease;
   border-bottom-left-radius: 25%;
-  box-shadow: 0 6px 0 #06c;
+  box-shadow: 0 6px 0 #0066cc;
   bottom: 6px;
   transition: all 0.1s linear; }
   #blue:active {
     bottom: 0px;
-    box-shadow: 0px 0px 0px #06c; }
+    box-shadow: 0px 0px 0px #0066cc; }
 
 #yellow {
-  background: #FD9A01;
+  background: #fc9a01;
+  transition: background-color 0.5s ease;
   border-bottom-right-radius: 25%;
   box-shadow: 0 6px 0 #916828;
   bottom: 6px;
@@ -90,7 +98,7 @@ body {
   .control-panel #level {
     width: 33.3333%; }
   .control-panel #start {
-    width: 33.3333%; }
+    width: 27.3333%; }
   .control-panel p {
     margin: 8px 0px 0px 0px; }
 
@@ -167,3 +175,7 @@ input.cmn-toggle-round:checked + label:after {
     margin-right: auto; }
   input.cmn-toggle-round:checked + label:after {
     margin-left: 66%; } }
+
+@media screen and (min-width: 765px) {
+  .container {
+    margin-top: 50px; } }
