@@ -1,50 +1,169 @@
 body {
-  background-image: url("http://all4desktop.com/data_images/original/4236795-wallpaper-background.jpg");
-  font-family: 'Righteous', cursive; }
+  background: skyblue;
+  font-family: 'Righteous', cursive;
+  box-sizing: border-box; }
 
-.simon {
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap; }
+
+.game {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 70vh;
+  margin-top: 10px; }
+
+.button {
   position: relative;
-  margin: 50px auto;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background-color: #333333;
-  border-style: solid; }
+  display: block;
+  height: 50%;
+  width: 50%;
+  margin-bottom: 1px; }
 
-.home {
+#green {
+  background: #39d565;
+  border-top-left-radius: 25%;
+  box-shadow: 0 6px 0 #0d934b;
+  bottom: 6px;
+  transition: all 0.1s linear; }
+  #green:active {
+    bottom: 0px;
+    box-shadow: 0px 0px 0px #0d934b; }
+
+#red {
+  background: #d23a51;
+  border-top-right-radius: 25%;
+  box-shadow: 0 6px 0 #711515;
+  bottom: 6px;
+  transition: all 0.1s linear; }
+  #red:active {
+    bottom: 0px;
+    box-shadow: 0px 0px 0px #711515; }
+
+#blue {
+  background: #09f;
+  border-bottom-left-radius: 25%;
+  box-shadow: 0 6px 0 #06c;
+  bottom: 6px;
+  transition: all 0.1s linear; }
+  #blue:active {
+    bottom: 0px;
+    box-shadow: 0px 0px 0px #06c; }
+
+#yellow {
+  background: #FD9A01;
+  border-bottom-right-radius: 25%;
+  box-shadow: 0 6px 0 #916828;
+  bottom: 6px;
+  transition: all 0.1s linear; }
+  #yellow:active {
+    bottom: 0px;
+    box-shadow: 0px 0px 0px #916828; }
+
+.score {
+  width: 100%;
+  height: 10vh;
+  text-align: center;
+  color: #FFF;
+  text-shadow: 1px 3px 2px black;
+  margin-bottom: 5px; }
+
+.control-panel {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  height: 15vh;
+  align-items: center;
+  justify-content: center;
+  background: #aaaaaa;
+  border-radius: 10px; }
+  .control-panel #on-off-btn {
+    width: 33.3333%; }
+  .control-panel #level {
+    width: 33.3333%; }
+  .control-panel #start {
+    width: 33.3333%; }
+  .control-panel p {
+    margin: 8px 0px 0px 0px; }
+
+.cmn-toggle {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  height: 250px;
-  width: 250px;
-  background: white;
-  border-radius: 50%;
-  margin: -125px 0px 0px -125px;
-  border: 3px solid black; }
+  margin-left: -9999px;
+  visibility: hidden; }
 
-.home h1 {
-  font-size: 50px;
+.cmn-toggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none; }
+
+input.cmn-toggle-round + label {
+  padding: 2px;
+  max-width: 90%;
+  height: 35px;
+  background-color: #dddddd;
+  border-radius: 60px;
+  margin-top: 9px;
+  margin-left: 5px; }
+
+input.cmn-toggle-round + label:before,
+input.cmn-toggle-round + label:after {
+  display: block;
   position: absolute;
-  left: 18%;
-  top: 0%; }
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: ""; }
 
-.red {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  /*background-color: red*/ }
+input.cmn-toggle-round + label:before {
+  right: 1px;
+  background-color: white;
+  border-radius: 60px;
+  transition: background 0.4s; }
 
-.row {
-  position: absolute;
-  left: 8px;
-  bottom: 110px;
-  border: 10px solid red; }
+input.cmn-toggle-round + label:after {
+  width: 38px;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: margin-left 0.4s; }
 
-#count {
-  background: red;
-  width: 50px;
+input.cmn-toggle-round:checked + label:before {
+  background-color: #8ce196; }
+
+input.cmn-toggle-round:checked + label:after {
+  margin-left: 58%; }
+
+.btn-round {
+  width: 50%;
   height: 50px;
-  border-radius: 93px 93px 93px 93px;
-  -moz-border-radius: 93px 93px 93px 93px;
-  -webkit-border-radius: 93px 93px 93px 93px;
-  border: 2px solid #000000; }
+  background: #ed2914;
+  border-radius: 100%;
+  outline: none;
+  box-shadow: 0 6px 0 #711515;
+  bottom: 6px;
+  transition: all 0.1s linear; }
+  .btn-round:active {
+    bottom: 0px;
+    box-shadow: 0px 0px 0px #711515; }
+
+@media screen and (max-width: 311px) {
+  input.cmn-toggle-round:checked + label:after {
+    margin-left: 45%; } }
+
+@media screen and (min-width: 426px) {
+  .container {
+    width: 426px;
+    margin-left: auto;
+    margin-right: auto; }
+  input.cmn-toggle-round:checked + label:after {
+    margin-left: 66%; } }
+
+@media screen and (min-height: 605px) {
+  .container {
+    height: 605px; } }

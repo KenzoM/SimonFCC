@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/styles.css">
-    <title>Simon Says FCC</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" charset="utf-8"></script>
+    <title>Simon Game FCC</title>
   </head>
   <body>
-    <div class="simon">
-      <div class="home">
-        <h1>Simon</h1>
-        <div class="row">
-          <div id="count"></div>
-          <p>hello</p>
-        </div>
+    <div class="container">
+      <div class="game">
+        <div id="green" class="button"></div>
+        <div id="red" class="button"></div>
+        <div id="blue" class="button"></div>
+        <div id="yellow" class="button"></div>
       </div>
-      <div class="buttons">
-        <div class="red" data-tile="1"></div>
-        <div class="blue" data-tile="2"></div>
-        <div class="yellow" data-tile="3"></div>
-        <div class="green" data-tile="4"></div>
+      <div class="score">
+        <h2>Score: 0 </h2>
+      </div>
+      <div class="control-panel">
+        <div id="on-off-btn">
+          <input id="on-off-slider"type="checkbox" class="cmn-toggle cmn-toggle-round">
+          <label for="on-off-slider"></label>
+          <p>Off/On</p>
+        </div>
+        <div id="level">
+          <input id="level-slider"type="checkbox" class="cmn-toggle cmn-toggle-round">
+          <label for="level-slider"></label>
+          <p>Level</p>
+        </div>
+        <div id="start">
+          <button class="btn-round"></button>
+          <p>(re)Start</p>
+        </div>
       </div>
     </div>
   </body>
