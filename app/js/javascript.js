@@ -28,9 +28,11 @@ $(document).ready(function(){
     if($("#on-off-slider").hasClass("on")){
       game.on = true;
     } else{
+      console.log("game is turned off")
       game.on = false;
       game.start = false;
       game.restart = false;
+      $(".button").unbind("click")
     }
   })
 
@@ -72,6 +74,7 @@ $(document).ready(function(){
     console.log("Simon call random sequence");
     board.randomSequence();
     board.animateDisplay();
+
   }
 
   //lets simply collect all 20 random sequence in the beginning
@@ -90,7 +93,8 @@ $(document).ready(function(){
       if (generatedPattern.length === 0){
         return
       }
-      $("#" + generatedPattern[0]).toggleClass("animate");
+
+      $("#" + generatedPattern[0]).toggleClass("animate")
 
       if(condition){
         setTimeout(function(){
@@ -100,11 +104,10 @@ $(document).ready(function(){
         generatedPattern.splice(0,1);
         setTimeout(function(){
           animatePattern(true)
-        },10)
+        },50)
       }
     }
-    // var generatedPattern = board.sequence.slice(0,board.index);
-    var generatedPattern = ["green","blue","blue","yellow","red"]
+    var generatedPattern = board.sequence.slice(0,board.index);
     console.log(generatedPattern)
     animatePattern(true) //Here is where we call the function animatePattern
     board.index += 1;
