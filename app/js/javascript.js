@@ -89,7 +89,7 @@ $(document).ready(function(){
     $(".status h2").text(status);
     setTimeout(function() {
       $(".status h2").fadeOut(500, function() {
-          $(this).text("Score: 0");
+          $(this).text("Score: " + game.score);
           $(this).fadeIn(500);
           });
       }, 1000);
@@ -111,6 +111,7 @@ $(document).ready(function(){
     if (game.on === false){return }
     var currentLevel = board.sequence.slice(0,board.index);
     var turn = 0;
+    var error = false;
     $(".button").click(function(){
       var color = $(this).attr('id');
       if(currentLevel[turn] === color){
@@ -126,11 +127,14 @@ $(document).ready(function(){
         } else{
           board.makeNoise("wrong");
           board.index -= 1;
-          setTimeout(board.animateDisplay, 5000)
+          error = true;
+          $(".status h2").text("Try Again!")
+          console.log(board)
+          console.log(game)
+          setTimeout(game.play, 3000)
         }
-        //resets the game depending on level
       }
-      if(turn === board.index){
+      if(turn === board.index && error === false){
         game.score += 1 ;
         if (game.score === 20){
           game.gameOver("You Win!")
