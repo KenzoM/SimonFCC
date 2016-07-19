@@ -54,9 +54,13 @@ $(document).ready(function(){
         game.restart = true;
       } else{
         console.log("this is the first game")
+        board.updateStatus("Game Start!")
         board.initialize(game.level);
         board.randomSequence();
-        game.play();
+        // game.play();
+        setTimeout(function() {
+          game.play()
+        }, 2500);
       }
       game.start = true;
     } else{
@@ -64,32 +68,20 @@ $(document).ready(function(){
     }
   })
 
+  Board.prototype.updateStatus = function(status){
+    $(".status h2").text(status);
+    setTimeout(function() {
+      $(".status h2").fadeOut(500, function() {
+          $(this).text("Score: 0");
+          $(this).fadeIn(500);
+          });
+      }, 1000);
+  }
 
   Game.prototype.play = function(){
     board.turnOffUserInput(); //turns off user's input
     board.animateDisplay(); //animate the sequence on the board
     board.getUserInput(); //turns on user's input
-  }
-
-  Board.prototype.evaluateInput = function(currentLevel){
-    //Had some help with this algorithm on evaluation over stackoverflow
-    for (var i = 0; i < board.userInput.length; i++) {
-      if (board.userInput[i] !== currentLevel[i]) {
-        alert("Lose!");
-        return;
-      } else if (board.userInput.length === currentLevel.length) {
-        for (var i = 0; i < board.userInput.length; i++) {
-          if (board.userInput[i] === currentLevel[i]) {
-            // alert("One point correct!")
-            if (board.index === board.userInput.length) {
-              // alert("Finished!")
-              game.play();
-            }
-          }
-        }
-      }
-    }
-    console.log("done")
   }
 
   Board.prototype.turnOffUserInput = function(){
