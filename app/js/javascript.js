@@ -8,7 +8,6 @@ $(document).ready(function(){
 
   function Board(gameLevel){
     this.sequence = [];
-    this.userInput = [];
     this.level = gameLevel || "";
     this.index = 0;
   }
@@ -19,7 +18,7 @@ $(document).ready(function(){
     this.start = false;
     this.score = 0;
     this.over = false;
-    this.restart = false;
+    // this.restart = false;
   }
 
   //If the game is off, it will default game.on and game.start to false
@@ -51,22 +50,25 @@ $(document).ready(function(){
     if($("#on-off-slider").hasClass("on")){
       if(game.start === true){
         console.log("restart the game")
-        game.restart = true;
+        game.newGame("Restarting the Game!")
       } else{
         console.log("this is the first game")
-        board.updateStatus("Game Start!")
-        board.initialize(game.level);
-        board.randomSequence();
-        // game.play();
-        setTimeout(function() {
-          game.play()
-        }, 2500);
+        game.newGame("Game Start!")
       }
       game.start = true;
     } else{
       game.start = false;
     }
   })
+
+  Game.prototype.newGame = function(status){
+    board.updateStatus(status)
+    board.initialize(game.level);
+    board.randomSequence();
+    setTimeout(function() {
+      game.play()
+    }, 2500);
+  }
 
   Board.prototype.updateStatus = function(status){
     $(".status h2").text(status);
@@ -89,7 +91,6 @@ $(document).ready(function(){
   }
 
   Board.prototype.getUserInput = function(){
-    board.userInput = []; //reset the user input
     var currentLevel = board.sequence.slice(0,board.index);
     var turn = 0;
     $(".button").click(function(){
