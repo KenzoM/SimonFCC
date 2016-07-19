@@ -83,6 +83,7 @@ $(document).ready(function(){
   Game.prototype.play = function(){
     board.turnOffUserInput(); //turns off user's input
     board.animateDisplay(); //animate the sequence on the board
+    console.log(board)
     board.getUserInput(); //turns on user's input
   }
 
@@ -92,6 +93,7 @@ $(document).ready(function(){
 
   Board.prototype.getUserInput = function(){
     var currentLevel = board.sequence.slice(0,board.index);
+    console.log(currentLevel)
     var turn = 0;
     $(".button").click(function(){
       var color = $(this).attr('id');
@@ -104,7 +106,7 @@ $(document).ready(function(){
       }
       if(turn === board.index){
         console.log("next round")
-        game.play()
+        setTimeout(game.play, 1000)
       }
     })
   }
