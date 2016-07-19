@@ -32,6 +32,7 @@ $(document).ready(function(){
       game.start = false;
       game.restart = false;
       $(".button").unbind("click")
+      $(".status h2").text("--")
     }
   })
 
@@ -92,6 +93,9 @@ $(document).ready(function(){
   }
 
   Board.prototype.getUserInput = function(){
+    //extra caution: if user press input then
+    //turn off the game immediately
+    if (game.on === false){return }
     var currentLevel = board.sequence.slice(0,board.index);
     console.log(currentLevel)
     var turn = 0;
@@ -101,6 +105,7 @@ $(document).ready(function(){
         console.log("correct")
         turn += 1;
       } else{
+        console.log(board)
         alert("wrong!");
         //resets the game depending on level
       }
@@ -123,6 +128,9 @@ $(document).ready(function(){
 
   //animateDisplay simply animates the board
   Board.prototype.animateDisplay = function(){
+    //extra caution: if user press input then
+    //turn off the game immediately
+    if (game.on === false){return }
     function animatePattern(condition){
       //exit if generatedPattern is zero
       //otherwise, let's light up
@@ -144,6 +152,6 @@ $(document).ready(function(){
     //generatedPattern takes a slice of the generated sequence from .prototype.randomSequence
     var generatedPattern = board.sequence.slice(0,board.index + 1);
     animatePattern(true) //Here is where we call the function animatePattern
-    board.index += 1;
+    board.index += 1; //everytime animateDisplay() is called, we'll proceed the next pattern
   }
 })
