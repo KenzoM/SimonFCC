@@ -2,11 +2,12 @@ $(document).ready(function(){
   var game = new Game();
   var board = new Board();
 
-  var audioButtons = {
+  var audioSource = {
     "green" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
     "red" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"),
     "blue" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"),
-    "yellow" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3")
+    "yellow" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
+    "wrong" : new Audio("http://mp3gfx.com/download/179262796.mp3")
   }
 
   Board.prototype.initialize = function (level) {
@@ -14,7 +15,7 @@ $(document).ready(function(){
   };
 
   Board.prototype.makeNoise = function(color){
-    audioButtons[color].play();
+    audioSource[color].play();
   }
 
   function Board(gameLevel){
@@ -38,7 +39,6 @@ $(document).ready(function(){
     if($("#on-off-slider").hasClass("on")){
       game.on = true;
     } else{
-      console.log("game is turned off")
       game.on = false;
       game.start = false;
       game.score = 0;
@@ -80,9 +80,9 @@ $(document).ready(function(){
     board.updateStatus(status)
     board.initialize(game.level);
     board.randomSequence();
-    setTimeout(function() {
-      game.play()
-    }, 2500);
+    game.score = 0;
+    console.log(game)
+    setTimeout(game.play, 2500);
   }
 
   Board.prototype.updateStatus = function(status){
@@ -98,7 +98,6 @@ $(document).ready(function(){
   Game.prototype.play = function(){
     board.turnOffUserInput(); //turns off user's input
     board.animateDisplay(); //animate the sequence on the board
-    console.log(board)
     board.getUserInput(); //turns on user's input
   }
 
@@ -111,24 +110,30 @@ $(document).ready(function(){
     //turn off the game immediately
     if (game.on === false){return }
     var currentLevel = board.sequence.slice(0,board.index);
-    console.log(currentLevel)
     var turn = 0;
     $(".button").click(function(){
       var color = $(this).attr('id');
-      board.makeNoise(color);
       if(currentLevel[turn] === color){
         turn += 1;
+        board.makeNoise(color);
       } else{
-        console.log(board)
-        alert("wrong!");
+        if(board.level === "strict"){
+          board.makeNoise("wrong");
+          game.gameOver("You Lose!");
+          setTimeout(function(){
+            game.newGame("Game Start!")
+          }, 2500)
+        } else{
+          board.makeNoise("wrong");
+          board.index -= 1;
+          setTimeout(board.animateDisplay, 5000)
+        }
         //resets the game depending on level
       }
       if(turn === board.index){
         game.score += 1 ;
         if (game.score === 20){
-          $(".status h2").text("You Win! Try Again?");
-          board.turnOffUserInput()
-          game.over = true;
+          game.gameOver("You Win!")
           return
         }
         var scoreString = "Score: " + game.score;
@@ -136,6 +141,12 @@ $(document).ready(function(){
         setTimeout(game.play, 1000)
       }
     })
+  }
+
+  Game.prototype.gameOver = function(prompt){
+    $(".status h2").text(prompt);
+    board.turnOffUserInput()
+    game.over = true;
   }
 
   //lets simply collect all 20 random sequence in the beginning
