@@ -1,13 +1,12 @@
 $(document).ready(function(){
   var game = new Game();
   var board = new Board();
-
   //Sources of the sounds for buttons and wrong buzzer
   var audioSource = {
     "green" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
     "red" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"),
     "blue" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"),
-    "yellow" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
+    "yellow" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"),
     "wrong" : new Audio("http://mp3gfx.com/download/179262796.mp3")
   }
   //Slider is used to turn on/off game
@@ -24,7 +23,6 @@ $(document).ready(function(){
       $(".status h2").text("--")
     }
   })
-
   //Selects the level either easy(default) or strict
   $("#level-slider").click(function(){
     $(this).toggleClass("strict")
@@ -34,7 +32,6 @@ $(document).ready(function(){
       game.level = "easy";
     }
   })
-
   //if the (re)start button is pressed and the game is on
   //it will start or restart the game, based on game.start condition
   $(".btn-round").click(function(){
@@ -51,22 +48,18 @@ $(document).ready(function(){
       game.start = false;
     }
   })
-
   function Board(gameLevel){
     this.sequence = [];
     this.level = gameLevel || "";
     this.index = 0;
   }
-
   Board.prototype.initialize = function (level) {
     board = new Board(level)
   };
-
   //calls when the appropiate sound should make
   Board.prototype.makeNoise = function(color){
     audioSource[color].play();
   }
-
   //updates the game status with fade-in-out effect
   Board.prototype.updateStatus = function(status){
     $(".status h2").text(status);
@@ -77,7 +70,6 @@ $(document).ready(function(){
           });
       }, 1000);
   }
-
   //gets user's input via click listener
   Board.prototype.getUserInput = function(){
     //extra caution: if user press input then
@@ -120,7 +112,6 @@ $(document).ready(function(){
       }
     })
   }
-
   //lets simply collect all 20 random sequence in the beginning
   Board.prototype.randomSequence = function(){
     var arrColors = ["green","blue","red","yellow"];
@@ -129,7 +120,6 @@ $(document).ready(function(){
       board.sequence.push(newSeq);
     }
   };
-
   //animateDisplay simply animates the board
   Board.prototype.animateDisplay = function(){
     //extra caution: if user press button then
@@ -187,7 +177,12 @@ $(document).ready(function(){
     this.restart = false;
     this.writing = false;
   }
-
+  //The game mechanics
+  Game.prototype.play = function(){
+    board.turnOffUserInput(); //turns off user's input
+    board.animateDisplay(); //animate the sequence on the board
+    board.getUserInput(); //turns on user's input
+  }
   //initialize new game and outputs its status
   Game.prototype.newGame = function(status){
     game.restart = false;
@@ -196,12 +191,6 @@ $(document).ready(function(){
     board.randomSequence();
     game.score = 0;
     setTimeout(game.play, 2500);
-  }
-  //The game mechanics
-  Game.prototype.play = function(){
-    board.turnOffUserInput(); //turns off user's input
-    board.animateDisplay(); //animate the sequence on the board
-    board.getUserInput(); //turns on user's input
   }
   Game.prototype.gameOver = function(prompt){
     $(".status h2").text(prompt);
