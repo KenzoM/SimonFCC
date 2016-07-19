@@ -10,7 +10,7 @@ $(document).ready(function(){
     this.sequence = [];
     this.userInput = [];
     this.level = gameLevel || "";
-    this.index = 1;
+    this.index = 0;
   }
   //lets initilize the game first as default in the following:
   function Game(level){
@@ -55,6 +55,7 @@ $(document).ready(function(){
       } else{
         console.log("this is the first game")
         board.initialize(game.level);
+        board.randomSequence();
         game.play();
       }
       game.start = true;
@@ -65,20 +66,59 @@ $(document).ready(function(){
 
 
   Game.prototype.play = function(){
-    //Event listener on .buttons
+    board.turnOffUserInput(); //turns off user's input
+    board.animateDisplay(); //animate the sequence on the board
+    board.getUserInput(); //turns on user's input
+  }
+
+  Board.prototype.evaluateInput = function(currentLevel){
+    //Had some help with this algorithm on evaluation over stackoverflow
+    for (var i = 0; i < board.userInput.length; i++) {
+      if (board.userInput[i] !== currentLevel[i]) {
+        alert("Lose!");
+        return;
+      } else if (board.userInput.length === currentLevel.length) {
+        for (var i = 0; i < board.userInput.length; i++) {
+          if (board.userInput[i] === currentLevel[i]) {
+            // alert("One point correct!")
+            if (board.index === board.userInput.length) {
+              // alert("Finished!")
+              game.play();
+            }
+          }
+        }
+      }
+    }
+    console.log("done")
+  }
+
+  Board.prototype.turnOffUserInput = function(){
+    $(".button").unbind("click");
+  }
+
+  Board.prototype.getUserInput = function(){
+    board.userInput = []; //reset the user input
+    var currentLevel = board.sequence.slice(0,board.index);
+    var turn = 0;
     $(".button").click(function(){
       var color = $(this).attr('id');
-      console.log(color)
+      if(currentLevel[turn] === color){
+        console.log("correct")
+        turn += 1;
+      } else{
+        alert("wrong!");
+        //resets the game depending on level
+      }
+      if(turn === board.index){
+        console.log("next round")
+        game.play()
+      }
     })
-
-    console.log("Simon call random sequence");
-    board.randomSequence();
-    board.animateDisplay();
-
   }
 
   //lets simply collect all 20 random sequence in the beginning
   Board.prototype.randomSequence = function(){
+    console.log("Simon call 20 random sequence");
     var arrColors = ["green","blue","red","yellow"];
     while(board.sequence.length < 20){
       var newSeq = arrColors[Math.floor(Math.random() * arrColors.length)];
@@ -86,6 +126,7 @@ $(document).ready(function(){
     }
   };
 
+  //animateDisplay simply animates the board
   Board.prototype.animateDisplay = function(){
     function animatePattern(condition){
       //exit if generatedPattern is zero
@@ -93,9 +134,7 @@ $(document).ready(function(){
       if (generatedPattern.length === 0){
         return
       }
-
       $("#" + generatedPattern[0]).toggleClass("animate")
-
       if(condition){
         setTimeout(function(){
           animatePattern(false)
@@ -104,11 +143,11 @@ $(document).ready(function(){
         generatedPattern.splice(0,1);
         setTimeout(function(){
           animatePattern(true)
-        },50)
+        },70)
       }
     }
-    var generatedPattern = board.sequence.slice(0,board.index);
-    console.log(generatedPattern)
+    //generatedPattern takes a slice of the generated sequence from .prototype.randomSequence
+    var generatedPattern = board.sequence.slice(0,board.index + 1);
     animatePattern(true) //Here is where we call the function animatePattern
     board.index += 1;
   }
