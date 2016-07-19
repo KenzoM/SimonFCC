@@ -2,9 +2,20 @@ $(document).ready(function(){
   var game = new Game();
   var board = new Board();
 
+  var audioButtons = {
+    "green" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
+    "red" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"),
+    "blue" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"),
+    "yellow" : new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3")
+  }
+
   Board.prototype.initialize = function (level) {
     board = new Board(level)
   };
+
+  Board.prototype.makeNoise = function(color){
+    audioButtons[color].play();
+  }
 
   function Board(gameLevel){
     this.sequence = [];
@@ -18,6 +29,7 @@ $(document).ready(function(){
     this.start = false;
     this.score = 18;
     this.over = false;
+    this.restart = false;
   }
 
   //If the game is off, it will default game.on and game.start to false
@@ -29,7 +41,7 @@ $(document).ready(function(){
       console.log("game is turned off")
       game.on = false;
       game.start = false;
-      game.restart = false;
+      game.score = 0;
       $(".button").unbind("click")
       $(".status h2").text("--")
     }
@@ -50,6 +62,7 @@ $(document).ready(function(){
     if($("#on-off-slider").hasClass("on")){
       if(game.start === true){
         console.log("restart the game")
+        game.restart = true;
         game.newGame("Restarting the Game!")
         game.score = 0;
       } else{
@@ -63,6 +76,7 @@ $(document).ready(function(){
   })
 
   Game.prototype.newGame = function(status){
+    game.restart = false;
     board.updateStatus(status)
     board.initialize(game.level);
     board.randomSequence();
@@ -101,6 +115,7 @@ $(document).ready(function(){
     var turn = 0;
     $(".button").click(function(){
       var color = $(this).attr('id');
+      board.makeNoise(color);
       if(currentLevel[turn] === color){
         turn += 1;
       } else{
@@ -111,7 +126,8 @@ $(document).ready(function(){
       if(turn === board.index){
         game.score += 1 ;
         if (game.score === 20){
-          $(".status h2").text("You Win!");
+          $(".status h2").text("You Win! Try Again?");
+          board.turnOffUserInput()
           game.over = true;
           return
         }
@@ -135,15 +151,17 @@ $(document).ready(function(){
   Board.prototype.animateDisplay = function(){
     //extra caution: if user press input then
     //turn off the game immediately
-    if (game.on === false){return }
+    if (game.on === false || game.restart === true){return }
     function animatePattern(condition){
       //exit if generatedPattern is zero
       //otherwise, let's light up
       if (generatedPattern.length === 0){
         return
       }
-      $("#" + generatedPattern[0]).toggleClass("animate")
+      $("#" + generatedPattern[0]).toggleClass("animate");
+
       if(condition){
+        board.makeNoise(generatedPattern[0])
         setTimeout(function(){
           animatePattern(false)
         },1000)
