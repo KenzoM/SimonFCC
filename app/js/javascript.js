@@ -16,9 +16,8 @@ $(document).ready(function(){
     this.on = false;
     this.level = level || "easy";
     this.start = false;
-    this.score = 0;
+    this.score = 18;
     this.over = false;
-    // this.restart = false;
   }
 
   //If the game is off, it will default game.on and game.start to false
@@ -52,6 +51,7 @@ $(document).ready(function(){
       if(game.start === true){
         console.log("restart the game")
         game.newGame("Restarting the Game!")
+        game.score = 0;
       } else{
         console.log("this is the first game")
         game.newGame("Game Start!")
@@ -102,7 +102,6 @@ $(document).ready(function(){
     $(".button").click(function(){
       var color = $(this).attr('id');
       if(currentLevel[turn] === color){
-        console.log("correct")
         turn += 1;
       } else{
         console.log(board)
@@ -110,7 +109,14 @@ $(document).ready(function(){
         //resets the game depending on level
       }
       if(turn === board.index){
-        console.log("next round")
+        game.score += 1 ;
+        if (game.score === 20){
+          $(".status h2").text("You Win!");
+          game.over = true;
+          return
+        }
+        var scoreString = "Score: " + game.score;
+        $(".status h2").text(scoreString)
         setTimeout(game.play, 1000)
       }
     })
@@ -118,7 +124,6 @@ $(document).ready(function(){
 
   //lets simply collect all 20 random sequence in the beginning
   Board.prototype.randomSequence = function(){
-    console.log("Simon call 20 random sequence");
     var arrColors = ["green","blue","red","yellow"];
     while(board.sequence.length < 20){
       var newSeq = arrColors[Math.floor(Math.random() * arrColors.length)];
