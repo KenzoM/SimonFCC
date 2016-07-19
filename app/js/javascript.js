@@ -61,12 +61,10 @@ $(document).ready(function(){
   $(".btn-round").click(function(){
     if($("#on-off-slider").hasClass("on")){
       if(game.start === true){
-        console.log("restart the game")
         game.restart = true;
         game.newGame("Restarting the Game!")
         game.score = 0;
       } else{
-        console.log("this is the first game")
         game.newGame("Game Start!")
       }
       game.start = true;
@@ -81,7 +79,6 @@ $(document).ready(function(){
     board.initialize(game.level);
     board.randomSequence();
     game.score = 0;
-    console.log(game)
     setTimeout(game.play, 2500);
   }
 
@@ -128,9 +125,7 @@ $(document).ready(function(){
           board.makeNoise("wrong");
           board.index -= 1;
           error = true;
-          $(".status h2").text("Try Again!")
-          console.log(board)
-          console.log(game)
+          board.updateStatus("Try Again!")
           setTimeout(game.play, 3000)
         }
       }
@@ -166,20 +161,31 @@ $(document).ready(function(){
   Board.prototype.animateDisplay = function(){
     //extra caution: if user press input then
     //turn off the game immediately
-    if (game.on === false || game.restart === true){return }
+    if (game.on === false || game.restart === true){
+      return
+    }
     function animatePattern(condition){
+      var speed;
+      if(game.score < 5){
+        speed = 1000
+      } else if (game.score >= 5 && game.score <= 10) {
+        speed = 500
+      } else if (game.score > 11 && game.score <= 15) {
+        speed = 300;
+      } else{
+        speed = 250;
+      }
       //exit if generatedPattern is zero
       //otherwise, let's light up
       if (generatedPattern.length === 0){
         return
       }
       $("#" + generatedPattern[0]).toggleClass("animate");
-
       if(condition){
         board.makeNoise(generatedPattern[0])
         setTimeout(function(){
           animatePattern(false)
-        },1000)
+        },speed)
       } else{
         generatedPattern.splice(0,1);
         setTimeout(function(){
